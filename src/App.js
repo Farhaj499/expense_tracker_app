@@ -1,11 +1,12 @@
 import './App.css';
 import Child from "./Child";
+import {TransProvider} from "./TransContext";
 
 function App() {
   return (
-    <div >
+    <TransProvider >
       <Child />
-    </div>
+    </TransProvider>
   );
 }
 

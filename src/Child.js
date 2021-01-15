@@ -1,20 +1,46 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
+import { TransContext } from './TransContext';
 
 function Child() {
-    let transactions = [
-        {amount: 500, desc: "Cash"},
-        {amount: -40, desc: "Book"},
-        {amount: -200, desc: "Camera"}
-    ]
+    let {transactions, addTransaction} = useContext(TransContext);
+    const handleAddition = (event)=>{
+      event.preventDefault();
+      addTransaction({
+        amount: Number(newAmount),
+        desc: newDesc
+      })
+    }
+
+    let [newDesc, setDesc] = useState("");
+    let [newAmount, setAmount] = useState(0);
+
+    const getIncome =()=>{
+      let Income = 0;
+      for (var i=0; i < transactions.length; i++){
+        if(transactions[i].amount > 0)
+          Income+=transactions[i].amount
+      }
+      return Income;
+    }
+
+    const getExpense =()=>{
+      let Expense =0;
+      for (var i=0; i < transactions.length; i++){
+        if(transactions[i].amount < 0)
+          Expense+=transactions[i].amount
+      }
+      return Expense;
+    }
+
   return (
     <div className="Cont">
       <h1 className="text_centre"> Expense Tracker </h1>
 
-      <h3> Your Balance <br/> $260 </h3>
+      <h3> Your Balance <br/> ${getIncome() + getExpense()} </h3>
 
       <div className="expns">
-          <h3> Income <br/> $500 </h3>
-          <h3> Expense <br/> $240 </h3>
+          <h3> Income <br/> ${getIncome()} </h3>
+          <h3> Expense <br/> ${getExpense()} </h3>
       </div>
 
       <h3> History </h3> 
@@ -22,8 +48,8 @@ function Child() {
       <ul className="list">
           {transactions.map ((transObj, ind)=> { 
               return(
-                <li>
-                <span> {transObj.desc} </span> <span> {transObj.amount} </span>
+                <li key={ind}>
+                <span> {transObj.desc} </span> <span> ${transObj.amount} </span>
                 </li>
               )
           })}
@@ -32,13 +58,18 @@ function Child() {
       <h3> Add New Transaction </h3>
       <hr/>
 
-      <form className="form">
+      <form className="form" onSubmit={handleAddition}>
           <label> Enter Description <br/>
-              <input type={Text} required/>
+              <input type={Text}
+                placeholder="Description" 
+                onChange={(ev)=>setDesc(ev.target.value)
+              } required/>
           </label>
           <br/>
           <label> Enter Amount <br/>
-              <input type={Number} required/>
+              <input type={Number}
+                placeholder="Amount" 
+                onChange={(ev)=>setAmount(ev.target.value)} required/>
           </label>
           <br/>
           <input type="submit" value= "Add Transaction" />
