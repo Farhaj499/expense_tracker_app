@@ -31,9 +31,9 @@
 }
 
 .list>li{
-  display: flex;
+  display:flex;
   justify-content: space-between;
-  padding: 10px 5px;
+  padding: 5px 0px;
   background-color: white;
   box-shadow: 0 0 10 gray;
   margin: 5px 0;
